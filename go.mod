@@ -3,8 +3,8 @@ module github.com/orchestra-mcp/plugin-devtools-ssh
 go 1.23
 
 require (
-	github.com/orchestra-mcp/gen-go v0.1.0
-	github.com/orchestra-mcp/sdk-go v0.1.0
+	github.com/orchestra-mcp/gen-go v0.1.1
+	github.com/orchestra-mcp/sdk-go v0.1.1
 	github.com/pkg/sftp v1.13.7
 	golang.org/x/crypto v0.26.0
 	google.golang.org/protobuf v1.36.11
