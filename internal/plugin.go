@@ -9,9 +9,10 @@ import (
 // ToolsPlugin registers all SSH tools.
 type ToolsPlugin struct{}
 
-// RegisterTools registers all 7 SSH tools with the plugin builder.
+// RegisterTools registers all 11 SSH tools (10 regular + 1 streaming) with the plugin builder.
 func (tp *ToolsPlugin) RegisterTools(builder *plugin.PluginBuilder) {
 	mgr := ssh.NewManager()
+	iMgr := ssh.NewInteractiveManager()
 
 	builder.RegisterTool("ssh_connect",
 		"Connect to an SSH server",
@@ -40,4 +41,21 @@ func (tp *ToolsPlugin) RegisterTools(builder *plugin.PluginBuilder) {
 	builder.RegisterTool("ssh_list_remote",
 		"List files on remote server via SFTP",
 		tools.SSHListRemoteSchema(), tools.SSHListRemote(mgr))
+
+	// Interactive SSH session tools.
+	builder.RegisterTool("ssh_interactive_open",
+		"Open an interactive SSH shell with PTY allocation",
+		tools.SSHInteractiveOpenSchema(), tools.SSHInteractiveOpen(mgr, iMgr))
+
+	builder.RegisterTool("ssh_interactive_send",
+		"Send input to an interactive SSH session",
+		tools.SSHInteractiveSendSchema(), tools.SSHInteractiveSend(iMgr))
+
+	builder.RegisterTool("ssh_interactive_close",
+		"Close an interactive SSH session",
+		tools.SSHInteractiveCloseSchema(), tools.SSHInteractiveClose(iMgr))
+
+	builder.RegisterStreamingTool("ssh_interactive_stream",
+		"Stream real-time output from an interactive SSH session",
+		tools.SSHInteractiveStreamSchema(), tools.SSHInteractiveStream(iMgr))
 }
